@@ -147,6 +147,11 @@ module.exports = function ( parameters ) {
 
 		if ( this.autoClear === true ) this.clear();
 
+		if ( camera.matrixAutoUpdate ) {
+			camera.updateMatrix();
+			camera.updateMatrixWorld( true );
+		}
+
 		var renderData = projector.projectScene( scene, camera, false, false );
 		var elements = renderData.elements;
 
