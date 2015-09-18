@@ -1,6 +1,6 @@
 {
   "name": "three-software-renderer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Universal Three.js in-memory renderer",
   "main": "software-renderer.js",
   "scripts": {

@@ -544,7 +544,7 @@ module.exports = function ( parameters ) {
 
 				if ( material.map ) {
 
-					var texture = new THREE.SoftwareRenderer.Texture();
+					var texture = new Texture();
 					texture.fromImage( material.map.image );
 
 					textures[ material.map.id ] = texture;
