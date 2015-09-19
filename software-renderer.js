@@ -545,7 +545,15 @@ module.exports = function ( parameters ) {
 				if ( material.map ) {
 
 					var texture = new Texture();
-					texture.fromImage( material.map.image );
+					if ( material.map instanceof THREE.DataTexture ) { // uses a buffer
+
+						texture.fromData( material.map.image.data, material.map.image.width, material.map.image.height );
+
+					} else { // Texture uses an image
+
+						texture.fromImage( material.map.image );
+
+					}
 
 					textures[ material.map.id ] = texture;
 
@@ -2280,6 +2288,17 @@ var Projector2 = function () {
 var Texture = function() {
 
 	var canvas;
+
+  this.fromData = function ( data, width, height ) {
+
+		var size = width > height ? width : height;
+		size = nextPowerOfTwo( size );
+
+		this.data = data;
+		this.width = size;
+		this.height = size;
+
+	};
 
 	this.fromImage = function( image ) {
 

@@ -8,6 +8,7 @@ if you need to be GPU independent.
 
 # What's the drawback?
 Primarily performance. As this renderer does not have access to GPU acceleration and GPU shader units, it's much much slower than the CanvasRenderer or WebGLRenderer.
+In addition, you'll have to use `THREE.DataTexture` instead of a normal `THREE.Texture` for textures when you're in a headless environment (i.e. node.js).
 
 # What are possible use cases?
 * Rendering in a web worker, e.g. for static renderings that should happen in the background
