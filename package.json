@@ -4,6 +4,7 @@
   "description": "Universal Three.js in-memory renderer",
   "main": "software-renderer.js",
   "scripts": {
+    "example": "node example/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/avgp/three-software-renderer/issues"
   },
-  "homepage": "https://github.com/avgp/three-software-renderer#readme"
+  "homepage": "https://github.com/avgp/three-software-renderer#readme",
+  "devDependencies": {
+    "pngjs": "^3.0.0"
+  },
+  "dependencies": {
+    "three": "^0.82.1"
+  }
 }
