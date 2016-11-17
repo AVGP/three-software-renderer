@@ -97,6 +97,8 @@ var RenderableSprite = function () {
 
 };
 
+//
+
 var Projector = function () {
 
     var _object, _objectCount, _objectPool = [], _objectPoolLength = 0,
@@ -132,21 +134,21 @@ var Projector = function () {
 
     this.projectVector = function ( vector, camera ) {
 
-        console.warn( 'Projector2: .projectVector() is now vector.project().' );
+        console.warn( 'Projector: .projectVector() is now vector.project().' );
         vector.project( camera );
 
     };
 
     this.unprojectVector = function ( vector, camera ) {
 
-        console.warn( 'Projector2: .unprojectVector() is now vector.unproject().' );
+        console.warn( 'Projector: .unprojectVector() is now vector.unproject().' );
         vector.unproject( camera );
 
     };
 
     this.pickingRay = function ( vector, camera ) {
 
-        console.error( 'Projector2: .pickingRay() is now raycaster.setFromCamera().' );
+        console.error( 'Projector: .pickingRay() is now raycaster.setFromCamera().' );
 
     };
 
@@ -162,7 +164,7 @@ var Projector = function () {
 
         var normalMatrix = new THREE.Matrix3();
 
-        var setObject = function ( value ) {
+        function setObject( value ) {
 
             object = value;
             material = object.material;
@@ -172,9 +174,9 @@ var Projector = function () {
             normals.length = 0;
             uvs.length = 0;
 
-        };
+        }
 
-        var projectVertex = function ( vertex ) {
+        function projectVertex( vertex ) {
 
             var position = vertex.position;
             var positionWorld = vertex.positionWorld;
@@ -193,30 +195,30 @@ var Projector = function () {
                 positionScreen.y >= - 1 && positionScreen.y <= 1 &&
                 positionScreen.z >= - 1 && positionScreen.z <= 1;
 
-        };
+        }
 
-        var pushVertex = function ( x, y, z ) {
+        function pushVertex( x, y, z ) {
 
             _vertex = getNextVertexInPool();
             _vertex.position.set( x, y, z );
 
             projectVertex( _vertex );
 
-        };
+        }
 
-        var pushNormal = function ( x, y, z ) {
+        function pushNormal( x, y, z ) {
 
             normals.push( x, y, z );
 
-        };
+        }
 
-        var pushUv = function ( x, y ) {
+        function pushUv( x, y ) {
 
             uvs.push( x, y );
 
-        };
+        }
 
-        var checkTriangleVisibility = function ( v1, v2, v3 ) {
+        function checkTriangleVisibility( v1, v2, v3 ) {
 
             if ( v1.visible === true || v2.visible === true || v3.visible === true ) return true;
 
@@ -224,20 +226,20 @@ var Projector = function () {
             _points3[ 1 ] = v2.positionScreen;
             _points3[ 2 ] = v3.positionScreen;
 
-            return _clipBox.isIntersectionBox( _boundingBox.setFromPoints( _points3 ) );
+            return _clipBox.intersectsBox( _boundingBox.setFromPoints( _points3 ) );
 
-        };
+        }
 
-        var checkBackfaceCulling = function ( v1, v2, v3 ) {
+        function checkBackfaceCulling( v1, v2, v3 ) {
 
             return ( ( v3.positionScreen.x - v1.positionScreen.x ) *
                 ( v2.positionScreen.y - v1.positionScreen.y ) -
                 ( v3.positionScreen.y - v1.positionScreen.y ) *
                 ( v2.positionScreen.x - v1.positionScreen.x ) ) < 0;
 
-        };
+        }
 
-        var pushLine = function ( a, b ) {
+        function pushLine( a, b ) {
 
             var v1 = _vertexPool[ a ];
             var v2 = _vertexPool[ b ];
@@ -254,9 +256,9 @@ var Projector = function () {
 
             _renderData.elements.push( _line );
 
-        };
+        }
 
-        var pushTriangle = function ( a, b, c ) {
+        function pushTriangle( a, b, c ) {
 
             var v1 = _vertexPool[ a ];
             var v2 = _vertexPool[ b ];
@@ -299,7 +301,7 @@ var Projector = function () {
 
             }
 
-        };
+        }
 
         return {
             setObject: setObject,
@@ -311,7 +313,7 @@ var Projector = function () {
             pushUv: pushUv,
             pushLine: pushLine,
             pushTriangle: pushTriangle
-        };
+        }
 
     };
 
@@ -340,32 +342,40 @@ var Projector = function () {
         _renderData.objects.length = 0;
         _renderData.lights.length = 0;
 
+        function addObject( object ) {
+
+            _object = getNextObjectInPool();
+            _object.id = object.id;
+            _object.object = object;
+
+            _vector3.setFromMatrixPosition( object.matrixWorld );
+            _vector3.applyProjection( _viewProjectionMatrix );
+            _object.z = _vector3.z;
+            _object.renderOrder = object.renderOrder;
+
+            _renderData.objects.push( _object );
+
+        }
+
         scene.traverseVisible( function ( object ) {
 
             if ( object instanceof THREE.Light ) {
 
                 _renderData.lights.push( object );
 
-            } else if ( object instanceof THREE.Mesh || object instanceof THREE.Line || object instanceof THREE.Sprite ) {
+            } else if ( object instanceof THREE.Mesh || object instanceof THREE.Line ) {
 
-                var material = object.material;
+                if ( object.material.visible === false ) return;
+                if ( object.frustumCulled === true && _frustum.intersectsObject( object ) === false ) return;
 
-                if ( material.visible === false ) return;
+                addObject( object );
 
-                if ( object.frustumCulled === false || _frustum.intersectsObject( object ) === true ) {
+            } else if ( object instanceof THREE.Sprite ) {
 
-                    _object = getNextObjectInPool();
-                    _object.id = object.id;
-                    _object.object = object;
+                if ( object.material.visible === false ) return;
+                if ( object.frustumCulled === true && _frustum.intersectsSprite( object ) === false ) return;
 
-                    _vector3.setFromMatrixPosition( object.matrixWorld );
-                    _vector3.applyProjection( _viewProjectionMatrix );
-                    _object.z = _vector3.z;
-                    _object.renderOrder = object.renderOrder;
-
-                    _renderData.objects.push( _object );
-
-                }
+                addObject( object );
 
             }
 
@@ -411,7 +421,7 @@ var Projector = function () {
 
                         var normals = attributes.normal.array;
 
-                        for ( i = 0, l = normals.length; i < l; i += 3 ) {
+                        for ( var i = 0, l = normals.length; i < l; i += 3 ) {
 
                             renderList.pushNormal( normals[ i ], normals[ i + 1 ], normals[ i + 2 ] );
 
@@ -423,7 +433,7 @@ var Projector = function () {
 
                         var uvs = attributes.uv.array;
 
-                        for ( i = 0, l = uvs.length; i < l; i += 2 ) {
+                        for ( var i = 0, l = uvs.length; i < l; i += 2 ) {
 
                             renderList.pushUv( uvs[ i ], uvs[ i + 1 ] );
 
@@ -437,11 +447,11 @@ var Projector = function () {
 
                         if ( groups.length > 0 ) {
 
-                            for ( o = 0; o < groups.length; o ++ ) {
+                            for ( var o = 0; o < groups.length; o ++ ) {
 
                                 var group = groups[ o ];
 
-                                for ( i = group.start, l = group.start + group.count; i < l; i += 3 ) {
+                                for ( var i = group.start, l = group.start + group.count; i < l; i += 3 ) {
 
                                     renderList.pushTriangle( indices[ i ], indices[ i + 1 ], indices[ i + 2 ] );
 
@@ -451,7 +461,7 @@ var Projector = function () {
 
                         } else {
 
-                            for ( i = 0, l = indices.length; i < l; i += 3 ) {
+                            for ( var i = 0, l = indices.length; i < l; i += 3 ) {
 
                                 renderList.pushTriangle( indices[ i ], indices[ i + 1 ], indices[ i + 2 ] );
 
@@ -461,7 +471,7 @@ var Projector = function () {
 
                     } else {
 
-                        for ( i = 0, l = positions.length / 3; i < l; i += 3 ) {
+                        for ( var i = 0, l = positions.length / 3; i < l; i += 3 ) {
 
                             renderList.pushTriangle( i, i + 1, i + 2 );
 
@@ -479,7 +489,7 @@ var Projector = function () {
 
                     var material = object.material;
 
-                    var isFaceMaterial = material instanceof THREE.MeshFaceMaterial;
+                    var isFaceMaterial = material instanceof THREE.MultiMaterial;
                     var objectMaterials = isFaceMaterial === true ? object.material : null;
 
                     for ( var v = 0, vl = vertices.length; v < vl; v ++ ) {
@@ -518,7 +528,9 @@ var Projector = function () {
 
                         var face = faces[ f ];
 
-                        material = isFaceMaterial === true ? objectMaterials.materials[ face.materialIndex ] : object.material;
+                        material = isFaceMaterial === true
+                            ? objectMaterials.materials[ face.materialIndex ]
+                            : object.material;
 
                         if ( material === undefined ) continue;
 
@@ -603,15 +615,15 @@ var Projector = function () {
 
                 if ( geometry instanceof THREE.BufferGeometry ) {
 
-                    var attributes2 = geometry.attributes;
+                    var attributes = geometry.attributes;
 
-                    if ( attributes2.position !== undefined ) {
+                    if ( attributes.position !== undefined ) {
 
-                        var positions2 = attributes2.position.array;
+                        var positions = attributes.position.array;
 
-                        for ( var i2 = 0; i2 < positions2.length; i2 += 3 ) {
+                        for ( var i = 0, l = positions.length; i < l; i += 3 ) {
 
-                            renderList.pushVertex( positions2[ i2 ], positions2[ i2 + 1 ], positions2[ i2 + 2 ] );
+                            renderList.pushVertex( positions[ i ], positions[ i + 1 ], positions[ i + 2 ] );
 
                         }
 
