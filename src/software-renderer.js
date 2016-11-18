@@ -169,6 +169,8 @@ module.exports = function (parameters) {
       var material = element.material;
       var shader = getMaterialShader(material);
 
+      if ( !shader ) continue;
+
       if (element instanceof Projector.RenderableFace) {
 
         if (!element.uvs) {
@@ -525,6 +527,8 @@ module.exports = function (parameters) {
     var id = material.id;
     var shader = shaders[id];
 
+    if ( shader && !textures[ material.map.id ] ) delete shaders[ id ];
+
     if (shaders[id] === undefined) {
 
       material.addEventListener('update', onMaterialUpdate);
@@ -568,6 +572,8 @@ module.exports = function (parameters) {
             texture.fromImage(material.map.image);
 
           }
+
+          if ( !texture.data ) return;
 
           textures[material.map.id] = texture;
 
