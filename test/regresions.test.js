@@ -30,6 +30,6 @@ describe("Regression tests", function () {
     var hash = Crypto.createHash("md5");
     hash.update(new Uint8Array(theData.buffer));
 
-    Assert.equal(hash.digest("hex"), "2f2da8d0186079663e4b175df5f3655e");
+    Assert.equal(hash.digest("hex"), "4eac664945b8c217427edc12c1504779");
   });
 });
