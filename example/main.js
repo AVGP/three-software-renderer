@@ -26,7 +26,6 @@ mesh.rotation.y += 0.6;
 const renderer = new SoftwareRenderer();
 renderer.setSize(width, height);
 var imagedata = renderer.render(scene, camera);
-const theData = imagedata.data;
 
 // Create a PNG from the pixels array (RGBA)
 const png = new PNG({
@@ -34,7 +33,11 @@ const png = new PNG({
   height: height,
   filterType: -1
 });
-png.data = theData;
+
+for(var i=0;i<imagedata.data.length;i++) {
+  png.data[i] = imagedata.data[i];
+}
+console.log(png.data);
 if (!fs.existsSync("temp")) {
   fs.mkdirSync("temp");
 }
