@@ -726,7 +726,8 @@ module.exports = function (parameters) {
         mpUV12 = new THREE.Vector2(),
         mpUV23 = new THREE.Vector2(),
         mpUV31 = new THREE.Vector2(),
-        tempFace = {vertexNormalsModel: []};
+        tempFace = { vertexNormalsModel : []
+          , color : { r: face.color.r, g: face.color.b, b: face.color.b } };
 
       var weight;
 
