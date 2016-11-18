@@ -3,7 +3,11 @@
  * Simple example that renders a scene with a cube to a PNG image file.
  */
 const THREE = require("three");
-const SoftwareRenderer = require("../");
+
+// Use either named export or default export
+//const SoftwareRenderer = require("../");
+const SoftwareRenderer = require("../").SoftwareRenderer;
+
 const PNG = require("pngjs").PNG;
 const fs = require("fs");
 
