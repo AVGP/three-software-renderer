@@ -20,6 +20,9 @@ module.exports = function (parameters) {
   parameters = parameters || {};
 
   var canvas = {width: 0, height: 0};
+
+  var alpha = parameters.alpha;
+
   var shaders = {};
   var textures = {};
 
@@ -75,10 +78,8 @@ module.exports = function (parameters) {
 
   // WebGLRenderer compatibility
 
-  this.supportsVertexTextures = function () {
-  };
-  this.setFaceCulling = function () {
-  };
+  this.supportsVertexTextures = function () {};
+  this.setFaceCulling = function () {};
 
   this.setClearColor = function (color, alpha) {
 
@@ -87,8 +88,7 @@ module.exports = function (parameters) {
 
   };
 
-  this.setPixelRatio = function () {
-  };
+  this.setPixelRatio = function () {};
 
   this.setSize = function (width, height) {
     if (width === 0) return;
@@ -382,7 +382,7 @@ module.exports = function (parameters) {
       data[i] = clearColor.r * 255 | 0;
       data[i + 1] = clearColor.g * 255 | 0;
       data[i + 2] = clearColor.b * 255 | 0;
-      data[i + 3] = 255;
+      data[i + 3] = alpha ? 0 : 255;
 
     }
   }
@@ -1496,7 +1496,7 @@ module.exports = function (parameters) {
         data[poffset++] = clearColor.r * 255 | 0;
         data[poffset++] = clearColor.g * 255 | 0;
         data[poffset++] = clearColor.b * 255 | 0;
-        data[poffset++] = 255;
+        data[poffset++] = alpha ? 0 : 255;
 
       }
 
