@@ -3,7 +3,7 @@ three-software-renderer
 ##Universal Three.js in-memory renderer for node.js and the browser
 
 # What's this for?
-The `SoftwareRenderer` is a drop-in renderer for [Three.js](http://www.three.js.org) that can be used on the server and the client,
+The `SoftwareRenderer` is a drop-in renderer for [Three.js](http://www.threejs.org) that can be used on the server and the client,
 if you need to be GPU independent.
 
 # What's the drawback?
