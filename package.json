@@ -4,7 +4,7 @@
   "description": "Universal Three.js in-memory renderer",
   "main": "index.js",
   "scripts": {
-    "example": "node example/main.js",
+    "example": "node example/render-to-png.js",
     "test": "mocha"
   },
   "repository": {
