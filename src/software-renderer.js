@@ -19,7 +19,9 @@ module.exports = function (parameters) {
 
   parameters = parameters || {};
 
-  var canvas = {width: 0, height: 0};
+  var canvas = parameters.canvas !== undefined
+			 ? parameters.canvas
+			 : document.createElement( 'canvas' );
 
   var alpha = parameters.alpha;
 
