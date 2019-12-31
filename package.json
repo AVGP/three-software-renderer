@@ -28,6 +28,6 @@
     "pngjs": "^3.0.0"
   },
   "dependencies": {
-    "three": "^0.82.1"
+    "three": "^0.112.1"
   }
 }
