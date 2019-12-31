@@ -25,7 +25,7 @@
   "homepage": "https://github.com/avgp/three-software-renderer#readme",
   "devDependencies": {
     "mocha": "^6.2.2",
-    "pngjs": "^3.0.0"
+    "pngjs": "^3.4.0"
   },
   "dependencies": {
     "three": "^0.112.1"
