@@ -28,5 +28,8 @@
     "pngjs": "^3.4.0",
     "three": "^0.112.1"
   },
+  "peerDependencies": {
+    "three": "^0.112.1"
+  },
   "dependencies": {}
 }
