@@ -26,7 +26,8 @@
   "devDependencies": {
     "mocha": "^6.2.2",
     "pngjs": "^3.4.0",
-    "three": "^0.112.1"
+    "three": "^0.112.1",
+    "three-ply-loader": "^1.0.0"
   },
   "peerDependencies": {
     "three": "^0.112.1"

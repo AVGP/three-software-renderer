@@ -16,7 +16,7 @@ In addition, you'll have to use `THREE.DataTexture` instead of a normal `THREE.T
 * Tell me, if you have other ideas
 
 # Which Three.js version is this compatible with?
-So far I have tested 0.69 and 0.71. Please tell me if you tried it with other versions as well :-)
+So far I have tested 0.69 and 0.71. Most recently also tested with three.js v0.112.1. Please tell me if you tried it with other versions as well :-)
 
 # What is this work based on?
 First and foremost this is just a modified copy of the SoftwareRenderer found in [the Three.js example sources](https://github.com/mrdoob/three.js/blob/0b07813dc45481f1d16d3b6d2334178664861465/examples/js/renderers/SoftwareRenderer.js).

@@ -603,7 +603,10 @@ module.exports = function (parameters) {
 
         } else {
 
-          if (material.vertexColors === THREE.FaceColors) {
+          if (
+            (material.vertexColors === THREE.VertexColors) ||
+            (material.vertexColors === THREE.FaceColors)
+           ) {
 
             string = [
               'var colorOffset = offset * 4;',
