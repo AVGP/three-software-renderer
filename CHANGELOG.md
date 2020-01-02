@@ -22,6 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgraded `src/projector.js` to the latest three.js [source file][three-js-projector-source-link] available in order to encompass when **material.vertexColors** equals:
   - `THREE.VertexColors`
   - `THREE.FaceColors`
-
+- Minor edit in `src/software-renderer.js` in order to encompass when **material.vertexColors** is set to `THREE.VertexColors`
 
 [three-js-projector-source-link]: https://github.com/mrdoob/three.js/blob/dev/examples/js/renderers/Projector.js
