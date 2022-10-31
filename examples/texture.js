@@ -12,7 +12,7 @@ const PNG = require("pngjs").PNG;
 const fs = require("fs");
 
 // Parse a PNG texture file
-const textureData = PNG.sync.read(fs.readFileSync('checkerboard.png'))
+const textureData = PNG.sync.read(fs.readFileSync('assets/checkerboard.png'))
 
 // Create a data texture with the pixel info
 const tex = new THREE.DataTexture(
